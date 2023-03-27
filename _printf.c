@@ -4,21 +4,48 @@
  * @in_for: input text formated.
  * Return: int value.
  */
-int _printf(char* in_for, ...)
+int _printf(const char *format, ...)
 {
+va_list arg;
+int count = 0;
+const char *p;
 
-va_list VA;
-unsigned int i, j;
-va_start(VA, n);
-for (i = 0; i < n; i++)
+va_start(arg, format);
+
+for (p = format; *p; ++p)
 {
-printf("%d", va_arg(VA, int));
-if (separator != NULL && (i + 1) < n)
+if (*p != '%')
 {
-for (j = 0; separator[j] != '\0'; j++)
-printf("%c", separator[j]);
+putchar(*p);
+++count;
+} else {
+switch (*++p)
+{
+case 'c':
+{
+char c = va_arg(arg, int);
+putchar(c);
+++count;
+break;
+}
+case 's':
+{
+const char *s = va_arg(arg, const char *);
+while (*s)
+{
+putchar(*s++);
+++count;
+}
+break;
+}
+case '%': {
+putchar('%');
+++count;
+break;
 }
 }
-printf("\n");
-va_end(VA);
+}
+}
+va_end(arg);
+return count;
 }

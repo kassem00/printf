@@ -2,5 +2,8 @@
 #define _PUTCHAR_H
 #include <stdio.h>
 #include <stdlib.h>
-_printf(char* in_for, ...);
+#include <stdarg.h>
+#include <string.h>
+int _printf(const char *format, ...);
+int number_of_arg(char*);
 #endif
