@@ -9,16 +9,16 @@ int _printf(const char *format, ...)
 va_list arg;
 int count = 0;
 const char *p;
-
 va_start(arg, format);
-
 for (p = format; *p; ++p)
 {
 if (*p != '%')
 {
 putchar(*p);
 ++count;
-} else {
+}
+else
+{
 switch (*++p)
 {
 case 'c':
