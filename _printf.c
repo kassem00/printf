@@ -4,49 +4,44 @@
  * @format: input text formated.
  * Return: int value.
  */
-#include <stdio.h>
-#include <stdarg.h>
-
 int _printf(const char *format, ...)
 {
+va_list arg;
 int count = 0;
-va_list args;
-va_start(args, format);
-while (*format != '\0')
+const char *p;
+va_start(arg, format);
+for (p = format; *p; ++p)
+if (*p != '%')
 {
-if (*format == '%')
-{
-format++;
-if (*format == '%')
-{
-putchar('%');
-count++;
-}
-else if (*format == 'c')
-{
-char c = va_arg(args, int);
-putchar(c);
-count++;
-}
-else if
-(*format == 's')
-{
-char *s = va_arg(args, char *);
-while (*s != '\0')
-{
-putchar(*s);
-s++;
-count++;
-}
-}
+putchar(*p);
+++count;
 }
 else
+switch (*++p)
 {
-putchar(*format);
-count++;
+case 'c':
+{
+char c = va_arg(arg, int);
+putchar(c);
+++count;
+break;
 }
-format++;
+case 's':
+{
+const char *s = va_arg(arg, const char *);
+while (*s)
+{
+putchar(*s++);
+++count;
 }
-va_end(args);
-return count;
+break;
+}
+case '%': {
+putchar('%');
+++count;
+break;
+}
+}
+va_end(arg);
+return (count);
 }
