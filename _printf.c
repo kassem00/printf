@@ -1,51 +1,52 @@
 #include "main.h"
 /**
  * _printf - Print function
- * @in_for: input text formated.
+ * @format: input text formated.
  * Return: int value.
  */
+#include <stdio.h>
+#include <stdarg.h>
+
 int _printf(const char *format, ...)
 {
-va_list arg;
 int count = 0;
-const char *p;
-va_start(arg, format);
-for (p = format; *p; ++p)
+va_list args;
+va_start(args, format);
+while (*format != '\0')
 {
-if (*p != '%')
+if (*format == '%')
 {
-putchar(*p);
-++count;
+format++;
+if (*format == '%')
+{
+putchar('%');
+count++;
+}
+else if (*format == 'c')
+{
+char c = va_arg(args, int);
+putchar(c);
+count++;
+}
+else if
+(*format == 's')
+{
+char *s = va_arg(args, char *);
+while (*s != '\0')
+{
+putchar(*s);
+s++;
+count++;
+}
+}
 }
 else
 {
-switch (*++p)
-{
-case 'c':
-{
-char c = va_arg(arg, int);
-putchar(c);
-++count;
-break;
+putchar(*format);
+count++;
 }
-case 's':
-{
-const char *s = va_arg(arg, const char *);
-while (*s)
-{
-putchar(*s++);
-++count;
+format++;
 }
-break;
-}
-case '%': {
-putchar('%');
-++count;
-break;
-}
-}
-}
-}
-va_end(arg);
+va_end(args);
 return count;
 }

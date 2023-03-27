@@ -5,5 +5,4 @@
 #include <stdarg.h>
 #include <string.h>
 int _printf(const char *format, ...);
-int number_of_arg(char *);
 #endif
