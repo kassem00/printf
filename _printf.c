@@ -11,6 +11,7 @@ int count = 0;
 const char *p;
 va_start(arg, format);
 for (p = format; *p; ++p)
+{
 if (*p != '%')
 {
 putchar(*p);
@@ -42,6 +43,11 @@ putchar('%');
 break;
 }
 }
+}
 va_end(arg);
 return (count);
 }
+
+/***
+
+*/
