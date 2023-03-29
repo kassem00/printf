@@ -3,113 +3,43 @@
 /**
  * _printf - prints output according to a format
  * @format: format string
- * @...: input
+ *
  * Return: number of characters printed
  */
+
 int _printf(const char *format, ...)
 {
+va_list args;
 int count = 0;
-va_list args;
+char c, *s;
 va_start(args, format);
-while (*format)
-{
-if (*format == '%')
-{
+while (*format != '\0') {
+if (*format == '%') {
 format++;
-if (*format == 'c')
-incress_print(&count, va_arg(args, int));
-else if (*format == 's')
-incress_print(&count, va_arg(args, char *));
-else if (*format == '%')
-incress_print(&count, '%');
-else if (*format == 'd' || *format == 'i')
-incress_print(&count, va_arg(args, int));
-else
-{
-incress_print(&count, '%');
-incress_print(&count, *format);
-}
-}
-else
-incress_print(&count, *format);
-format++;
-}
-va_end(args);
-return (count);
-}
-
-/**
- * incress_print - Prints the value passed as parameter and increments the
- * counter of printed characters
- *
- * @count: A pointer to the counter of printed characters
- * @...:   The value to print
- */
-void incress_print(int *count, ...)
-{
-char *str;
-int n;
-va_list args;
-
-va_start(args, count);
-if (*count < 0)
-return;
-if (va_arg(args, int) == 0)
-{
-*count += _putchar(0);
-va_end(args);
-return;
-}
-va_end(args);
-va_start(args, count);
-switch (va_arg(args, int))
-{
-case '%':
-*count += _putchar('%');
-break;
+switch (*format) {
 case 'c':
-n = va_arg(args, int);
-*count += _putchar(n);
+c = va_arg(args, int);
+count += putchar(c);
 break;
 case 's':
-str = va_arg(args, char *);
-if (str == NULL)
-str = "(null)";
-while (*str)
-{
-*count += _putchar(*str);
-str++;
-}
+s = va_arg(args, char *);
+count += printf("%s", s);
 break;
-case 'd':
-case 'i':
-n = va_arg(args, int);
-if (n < 0)
-{
-*count += _putchar('-');
-n = -n;
-}
-if (n / 10)
-incress_print(count, n / 10);
-*count += _putchar('0' + n % 10);
+case '%':
+count += putchar('%');
 break;
 default:
-*count = -1;
+count += putchar('%');
+count += putchar(*format);
+break;
+}
+}
+else
+{
+count += putchar(*format);
+}
+format++;
 }
 va_end(args);
+return count;
 }
-
-#include "main.h"
-
-/**
- * _putchar - Writes the character c to stdout
- *
- * @c: The character to print
- *
- * Return: On success 1, on error -1
- */
-int _putchar(char c)
-{
-    return (write(1, &c, 1));
-}
-
