@@ -5,4 +5,5 @@
 #include <stdarg.h>
 #include <string.h>
 int _printf(const char *format, ...);
+void incress_print(int *count, ...);
 #endif
