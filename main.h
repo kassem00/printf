@@ -6,4 +6,5 @@
 #include <string.h>
 int _printf(const char *format, ...);
 void incress_print(int *count, ...);
+int _putchar(char c);
 #endif
