@@ -1,53 +1,59 @@
 #include "main.h"
-
 int _printf(const char *format, ...)
 {
-	va_list list;
-	int printed_chars = 0, buff_ind = 0, flags, width, precision, size;
-	char buffer[BUFF_SIZE] = {0};
-	size_t i;
+    int i, count = 0;
+    va_list arg_list;
 
-	if (!format)
-		return (-1);
+    va_start(arg_list, format);
 
-	va_start(list, format);
+    for (i = 0; format[i] != '\0'; i++)
+    {
+        if (format[i] == '%')
+        {
+            i++;
+            switch (format[i])
+            {
+                case 'c':
+                    count += putchar(va_arg(arg_list, int));
+                    break;
+                case 's':
+                    count += print_str(va_arg(arg_list, char *));
+                    break;
+                case 'd':
+                case 'i':
+                    count += print_int(va_arg(arg_list, int));
+                    break;
+                case 'u':
+                    count += print_unsigned(va_arg(arg_list, unsigned int), 10, 0);
+                    break;
+                case 'o':
+                    count += print_unsigned(va_arg(arg_list, unsigned int), 8, 0);
+                    break;
+                case 'x':
+                    count += print_unsigned(va_arg(arg_list, unsigned int), 16, 0);
+                    break;
+                case 'X':
+                    count += print_unsigned(va_arg(arg_list, unsigned int), 16, 1);
+                    break;
+                case 'p':
+                    count += print_address(va_arg(arg_list, void *));
+                    break;
+                case '%':
+                    count += putchar('%');
+                    break;
+                default:
+                    count += putchar('%');
+                    count += putchar(format[i]);
+                    break;
+            }
+        }
+        else
+        {
+            count += putchar(format[i]);
+        }
+    }
 
-	for (i = 0; format[i] != '\0'; i++)
-	{
-		if (format[i] != '%')
-		{
-			buffer[buff_ind++] = format[i];
-			if (buff_ind == BUFF_SIZE)
-			{
-				print_buffer(buffer, &buff_ind);
-				printed_chars += buff_ind;
-			}
-			else
-			{
-				printed_chars++;
-			}
-		}
-		else
-		{
-			print_buffer(buffer, &buff_ind);
-			flags = get_flags(format, &i);
-			width = get_width(format, &i, list);
-			precision = get_precision(format, &i, list);
-			size = get_size(format, &i);
-			++i;
-			printed_chars += handle_print(format, &i, list, buffer, flags, width, precision, size);
-		}
-	}
+    va_end(arg_list);
 
-	print_buffer(buffer, &buff_ind);
-	printed_chars += buff_ind;
-	va_end(list);
-
-	return (printed_chars);
-}
-
-void print_buffer(char buffer[], int *buff_ind)
-{
-	write(1, buffer, *buff_ind);
-	*buff_ind = 0;
+    return count;
 }
