@@ -8,34 +8,34 @@
  */
 int _printf(const char *format, ...)
 {
- int count = 0;
- va_list args;
- int i;
- char *str;
-
- va_start(args, format);
-
- for (i = 0; format && format[i]; i++)
- {
+int count = 0;
+va_list args;
+int i;
+char *str;
+va_start(args, format);
+if (format == NULL)
+return (-1);
+for (i = 0; format && format[i]; i++)
+{
 if (format[i] == '%')
 {
 switch (format[++i])
 {
- case 'c':
+case 'c':
 putchar(va_arg(args, int));
 count++;
 break;
- case 's':
+case 's':
 str = va_arg(args, char *);
 if (!str)
 str = "(null)";
 incress_print(&count, str, constchartype);
 break;
- case '%':
+case '%':
 putchar('%');
 count++;
 break;
- default:
+default:
 putchar('%');
 putchar(format[i]);
 count += 2;
@@ -53,19 +53,19 @@ return (count);
 }
 void incress_print(int *count, ...)
 {
-    va_list args;
-    va_start(args, count);
-    while (*count != INT_MAX)
-    {
-        if (va_arg(args, int) == chartype)
-            putchar(va_arg(args, int));
-        else if (va_arg(args, int) == constchartype)
-            fputs(va_arg(args, const char *), stdout);
-        else if (va_arg(args, int) == inttype)
-            printf("%d", va_arg(args, int));
-        else
-            break;
-        (*count)++;
-    }
-    va_end(args);
+va_list args;
+va_start(args, count);
+while (*count != INT_MAX)
+{
+if (va_arg(args, int) == chartype)
+putchar(va_arg(args, int));
+else if (va_arg(args, int) == constchartype)
+fputs(va_arg(args, const char *), stdout);
+else if (va_arg(args, int) == inttype)
+printf("%d", va_arg(args, int));
+else
+break;
+(*count)++;
+}
+va_end(args);
 }
