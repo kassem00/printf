@@ -1,69 +1,53 @@
 #include "main.h"
 
-/**
- * _printf - prints output according to a format.
- * @format: A pointer to a string to be printed.
- *
- * Return: The number of characters printed (excluding the null byte used to end output to strings).
- */
 int _printf(const char *format, ...)
 {
-int count = 0;
-va_list args;
-int i;
-char *str;
-va_start(args, format);
-for (i = 0; format && format[i]; i++)
-{
-if (format[i] == '%')
-{
-switch (format[++i])
-{
-case 'c':
-putchar(va_arg(args, int));
-count++;
-break;
-case 's':
-str = va_arg(args, char *);
-if (!str)
-str = "(null)";
-incress_print(&count, str, constchartype);
-break;
-case '%':
-putchar('%');
-count++;
-break;
-default:
-putchar('%');
-putchar(format[i]);
-count += 2;
-break;
+	va_list list;
+	int printed_chars = 0, buff_ind = 0, flags, width, precision, size;
+	char buffer[BUFF_SIZE] = {0};
+	size_t i;
+
+	if (!format)
+		return (-1);
+
+	va_start(list, format);
+
+	for (i = 0; format[i] != '\0'; i++)
+	{
+		if (format[i] != '%')
+		{
+			buffer[buff_ind++] = format[i];
+			if (buff_ind == BUFF_SIZE)
+			{
+				print_buffer(buffer, &buff_ind);
+				printed_chars += buff_ind;
+			}
+			else
+			{
+				printed_chars++;
+			}
+		}
+		else
+		{
+			print_buffer(buffer, &buff_ind);
+			flags = get_flags(format, &i);
+			width = get_width(format, &i, list);
+			precision = get_precision(format, &i, list);
+			size = get_size(format, &i);
+			++i;
+			printed_chars += handle_print(format, &i, list, buffer, flags, width, precision, size);
+		}
+	}
+
+	print_buffer(buffer, &buff_ind);
+	printed_chars += buff_ind;
+	va_end(list);
+
+	return (printed_chars);
 }
-}
-else
+
+void print_buffer(char buffer[], int *buff_ind)
 {
-putchar(format[i]);
-count++;
-}
-}
-va_end(args);
-return (count);
-}
-void incress_print(int *count, ...)
-{
-va_list args;
-va_start(args, count);
-while (*count != INT_MAX)
-{
-if (va_arg(args, int) == chartype)
-putchar(va_arg(args, int));
-else if (va_arg(args, int) == constchartype)
-fputs(va_arg(args, const char *), stdout);
-else if (va_arg(args, int) == inttype)
-printf("%d", va_arg(args, int));
-else
-break;
-(*count)++;
-}
-va_end(args);
+	write(1, buffer, *buff_ind);
+	*buff_ind = 0;
 }
