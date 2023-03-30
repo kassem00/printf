@@ -5,11 +5,10 @@
 #include <stdarg.h>
 #include <string.h>
 #include <unistd.h>
+#include <limits.h>
+#define constchartype 0
+#define chartype 1
+#define inttype 2
 int _printf(const char *format, ...);
-void incress_print(int *count, ...);
-int _putchar(char c);
-static int num_digits(int n);
-static void print_char_n(char c, int n);
-static void print_decimal(int n);
-static void print_string(char *s);
+int _putchar(char c);void incress_print(int *count, ...);
 #endif

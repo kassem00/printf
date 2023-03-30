@@ -1,115 +1,71 @@
 #include "main.h"
 
 /**
- * _printf - prints output according to a format
- * @format: format string
+ * _printf - prints output according to a format.
+ * @format: A pointer to a string to be printed.
  *
- * Return: number of characters printed
+ * Return: The number of characters printed (excluding the null byte used to end output to strings).
  */
-/* Returns the number of digits in an integer */
-static int num_digits(int n)
-{
-int count = 0;
-do {
-count++;
-n /= 10;
-} while (n != 0);
-return count;
-}
-
-/* Prints a character n times */
-static void print_char_n(char c, int n)
-{
-for (int i = 0; i < n; i++) {
-putchar(c);
-}
-}
-/* Prints an integer in decimal format */
-static void print_decimal(int n)
-{
-if (n == 0) {
-putchar('0');
-return;
-}
-if (n < 0) {
-putchar('-');
-n = -n;
-}
-int num_digits = num_digits(n);
-char buffer[num_digits + 1];
-for (int i = num_digits - 1; i >= 0; i--) {
-buffer[i] = n % 10 + '0';
-n /= 10;
-}
-buffer[num_digits] = '\0';
-printf("%s", buffer);
-}
-
-/* Prints a string */
-static void print_string(char *s)
-{
-while (*s != '\0') {
-putchar(*s);
-s++;
-}
-}
-
 int _printf(const char *format, ...)
 {
-va_list args;
-va_start(args, format);
-int count = 0;
-while (*format != '\0')
+ int count = 0;
+ va_list args;
+ int i;
+ char *str;
+
+ va_start(args, format);
+
+ for (i = 0; format && format[i]; i++)
+ {
+if (format[i] == '%')
 {
-if (*format == '%')
+switch (format[++i])
 {
-format++;
-switch (*format)
-{
-case 'c':
-{
-char c = va_arg(args, int);
-putchar(c);
+ case 'c':
+putchar(va_arg(args, int));
 count++;
 break;
-}
-case 's':
-{
-char *s = va_arg(args, char *);
-print_string(s);
-count += strlen(s);
+ case 's':
+str = va_arg(args, char *);
+if (!str)
+str = "(null)";
+incress_print(&count, str, constchartype);
 break;
-}
-case 'd':
-case 'i':
-{
-int n = va_arg(args, int);
-print_decimal(n);
-count += num_digits(n);
-break;
-}
-case '%':
-{
+ case '%':
 putchar('%');
 count++;
 break;
-}
-default:
-{
+ default:
 putchar('%');
-putchar(*format);
+putchar(format[i]);
 count += 2;
 break;
 }
 }
-}
 else
 {
-putchar(*format);
+putchar(format[i]);
 count++;
 }
-format++;
 }
 va_end(args);
-return count;
+return (count);
+}
+void incress_print(int *count, ...)
+{
+    va_list args;
+    va_start(args, count);
+    while (*count != INT_MAX)
+    {
+        if (va_arg(args, int) == chartype)
+            putchar(va_arg(args, int));
+        else if (va_arg(args, int) == constchartype)
+            fputs(va_arg(args, const char *), stdout);
+        else if (va_arg(args, int) == inttype)
+            printf("%d", va_arg(args, int));
+        else
+            break;
+        (*count)++;
+    }
+    va_end(args);
 }
