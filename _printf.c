@@ -1,59 +1,69 @@
 #include "main.h"
+
+/**
+ * _printf - prints output according to a format.
+ * @format: A pointer to a string to be printed.
+ *
+ * Return: The number of characters printed (excluding the null byte used to end output to strings).
+ */
 int _printf(const char *format, ...)
 {
-    int i, count = 0;
-    va_list arg_list;
-
-    va_start(arg_list, format);
-
-    for (i = 0; format[i] != '\0'; i++)
+int count = 0;
+va_list args;
+int i;
+char *str;
+va_start(args, format);
+for (i = 0; format && format[i]; i++)
+{
+if (format[i] == '%')
+{
+switch (format[++i])
+{
+case 'c':
+putchar(va_arg(args, int));
+count++;
+break;
+case 's':
+str = va_arg(args, char *);
+if (!str)
+str = "(null)";
+incress_print(&count, str, constchartype);
+break;
+case '%':
+putchar('%');
+count++;
+break;
+default:
+putchar('%');
+putchar(format[i]);
+count += 2;
+break;
+}
+}
+else
+{
+putchar(format[i]);
+count++;
+}
+}
+va_end(args);
+return (count);
+}
+void incress_print(int *count, ...)
+{
+    va_list args;
+    va_start(args, count);
+    while (*count != INT_MAX)
     {
-        if (format[i] == '%')
-        {
-            i++;
-            switch (format[i])
-            {
-                case 'c':
-                    count += putchar(va_arg(arg_list, int));
-                    break;
-                case 's':
-                    count += print_str(va_arg(arg_list, char *));
-                    break;
-                case 'd':
-                case 'i':
-                    count += print_int(va_arg(arg_list, int));
-                    break;
-                case 'u':
-                    count += print_unsigned(va_arg(arg_list, unsigned int), 10, 0);
-                    break;
-                case 'o':
-                    count += print_unsigned(va_arg(arg_list, unsigned int), 8, 0);
-                    break;
-                case 'x':
-                    count += print_unsigned(va_arg(arg_list, unsigned int), 16, 0);
-                    break;
-                case 'X':
-                    count += print_unsigned(va_arg(arg_list, unsigned int), 16, 1);
-                    break;
-                case 'p':
-                    count += print_address(va_arg(arg_list, void *));
-                    break;
-                case '%':
-                    count += putchar('%');
-                    break;
-                default:
-                    count += putchar('%');
-                    count += putchar(format[i]);
-                    break;
-            }
-        }
+        if (va_arg(args, int) == chartype)
+            putchar(va_arg(args, int));
+        else if (va_arg(args, int) == constchartype)
+            fputs(va_arg(args, const char *), stdout);
+        else if (va_arg(args, int) == inttype)
+            printf("%d", va_arg(args, int));
         else
-        {
-            count += putchar(format[i]);
-        }
+            break;
+        (*count)++;
     }
-
-    va_end(arg_list);
-
-    return count;
+    va_end(args);
 }
