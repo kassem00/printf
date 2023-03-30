@@ -24,14 +24,10 @@ switch (*format)
 case 'c':
 length += printf("%c", va_arg(args, int));
 break;
-case 's':
-length += printf("%s", va_arg(args, char *));
-break;
 case '%':
 length += printf("%%");
 break;
-case 'd':
-case 'i':
+case 'd' || 'i':
 length += printf("%d", va_arg(args, int));
 break;
 case 'u':
@@ -45,9 +41,6 @@ length += printf("%x", va_arg(args, unsigned int));
 break;
 case 'X':
 length += printf("%X", va_arg(args, unsigned int));
-break;
-case 'p':
-length += printf("%p", va_arg(args, void *));
 break;
 default:
 length += printf("%%%c", *format);
