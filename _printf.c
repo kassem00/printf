@@ -22,8 +22,7 @@ if (format[i] == '%')
 switch (format[++i])
 {
 case 'c':
-putchar(va_arg(args, int));
-count++;
+incress_print(&count, inttype, va_arg(args, int));
 break;
 case 's':
 str = va_arg(args, char *);
