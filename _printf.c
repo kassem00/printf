@@ -1,69 +1,67 @@
 #include "main.h"
+#include <stdarg.h>
+#include <stdio.h>
 
 /**
- * _printf - prints output according to a format.
- * @format: A pointer to a string to be printed.
+ * _printf - produces output according to a format
+ * @format: format string
  *
- * Return: The number of characters printed (excluding the null byte used to end output to strings).
+ * Return: number of characters printed (excluding null byte used to end output to strings)
  */
 int _printf(const char *format, ...)
 {
-int count = 0;
 va_list args;
-int i;
-char *str;
+int length = 0;
 va_start(args, format);
-for (i = 0; format && format[i]; i++)
+
+while (*format != '\0')
 {
-if (format[i] == '%')
+if (*format == '%')
 {
-switch (format[++i])
+format++;
+switch (*format)
 {
 case 'c':
-putchar(va_arg(args, int));
-count++;
+length += printf("%c", va_arg(args, int));
 break;
 case 's':
-str = va_arg(args, char *);
-if (!str)
-str = "(null)";
-incress_print(&count, str, constchartype);
+length += printf("%s", va_arg(args, char *));
 break;
 case '%':
-putchar('%');
-count++;
+length += printf("%%");
+break;
+case 'd':
+case 'i':
+length += printf("%d", va_arg(args, int));
+break;
+case 'u':
+length += printf("%u", va_arg(args, unsigned int));
+break;
+case 'o':
+length += printf("%o", va_arg(args, unsigned int));
+break;
+case 'x':
+length += printf("%x", va_arg(args, unsigned int));
+break;
+case 'X':
+length += printf("%X", va_arg(args, unsigned int));
+break;
+case 'p':
+length += printf("%p", va_arg(args, void *));
 break;
 default:
-putchar('%');
-putchar(format[i]);
-count += 2;
-break;
+length += printf("%%%c", *format);
 }
 }
 else
 {
-putchar(format[i]);
-count++;
+length += putchar(*format);
 }
+
+format++;
 }
+
 va_end(args);
-return (count);
-}
-void incress_print(int *count, ...)
-{
-    va_list args;
-    va_start(args, count);
-    while (*count != INT_MAX)
-    {
-        if (va_arg(args, int) == chartype)
-            putchar(va_arg(args, int));
-        else if (va_arg(args, int) == constchartype)
-            fputs(va_arg(args, const char *), stdout);
-        else if (va_arg(args, int) == inttype)
-            printf("%d", va_arg(args, int));
-        else
-            break;
-        (*count)++;
-    }
-    va_end(args);
+
+return length;
 }
