@@ -11,4 +11,5 @@
 #define inttype 2
 int _printf(const char *format, ...);
 int _putchar(char c);void incress_print(int *count, ...);
+void incress_print(int *count, ...);
 #endif
