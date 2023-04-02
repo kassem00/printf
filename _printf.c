@@ -1,70 +1,64 @@
 #include "main.h"
 
+void print_buffer(char buffer[], int *buff_ind);
+
 /**
- * _printf - prints output according to a format.
- * @format: A pointer to a string to be printed.
- *
- * Return: The number of characters printed (excluding the null byte used to end output to strings).
+ * _printf - Printf function
+ * @format: format.
+ * Return: Printed chars.
  */
 int _printf(const char *format, ...)
 {
-int count = 0;
-va_list args;
-int i;
-char *str;
-va_start(args, format);
+int i, printed = 0, printed_chars = 0;
+int flags, width, precision, size, buff_ind = 0;
+va_list list;
+char buffer[BUFF_SIZE];
+
 if (format == NULL)
 return (-1);
-for (i = 0; format && format[i]; i++)
+
+va_start(list, format);
+
+for (i = 0; format && format[i] != '\0'; i++)
 {
-if (format[i] == '%')
+if (format[i] != '%')
 {
-switch (format[++i])
-{
-case 'c':
-incress_print(&count, inttype, va_arg(args, int));
-break;
-case 's':
-str = va_arg(args, char *);
-if (!str)
-str = "(null)";
-incress_print(&count, str, constchartype);
-break;
-case '%':
-putchar('%');
-count++;
-break;
-default:
-putchar('%');
-putchar(format[i]);
-count += 2;
-break;
-}
+buffer[buff_ind++] = format[i];
+if (buff_ind == BUFF_SIZE)
+print_buffer(buffer, &buff_ind);
+/* write(1, &format[i], 1);*/
+printed_chars++;
 }
 else
 {
-putchar(format[i]);
-count++;
+print_buffer(buffer, &buff_ind);
+flags = parse_flags(format, &i);
+width = get_width(format, &i, list);
+precision = parse_precision(format, &i, list);
+size = parse_size(format, &i);
+++i;
+printed = handle_print(format, &i, list, buffer,
+flags, width, precision, size);
+if (printed == -1)
+return (-1);
+printed_chars += printed;
 }
 }
-va_end(args);
-return (count);
+
+print_buffer(buffer, &buff_ind);
+va_end(list);
+return (printed_chars);
 }
-void incress_print(int *count, ...)
+
+/**
+ * print_buffer - Prints the contents of the buffer if it exist
+ * @buffer: Array of chars
+ * @buff_ind: Index at which to add next char, represents the length.
+ */
+void print_buffer(char buffer[], int *buff_ind)
 {
-va_list args;
-va_start(args, count);
-while (*count != INT_MAX)
-{
-if (va_arg(args, int) == chartype)
-putchar(va_arg(args, int));
-else if (va_arg(args, int) == constchartype)
-fputs(va_arg(args, const char *), stdout);
-else if (va_arg(args, int) == inttype)
-printf("%d", va_arg(args, int));
-else
-break;
-(*count)++;
-}
-va_end(args);
+if (*buff_ind > 0)
+write(1, &buffer[0], *buff_ind);
+
+*buff_ind = 0;
 }

@@ -12,4 +12,7 @@
 int _printf(const char *format, ...);
 int _putchar(char c);void incress_print(int *count, ...);
 void incress_print(int *count, ...);
+int parse_size(const char *format, int *index);
+int parse_precision(const char *format, int *index, va_list list);
+int parse_flags(const char *format, int *index);
 #endif
