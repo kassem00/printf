@@ -3,7 +3,7 @@
 /**
  * parse_flags - Parses the active flags in a format string
  * @format: Formatted string in which to print the arguments
- * @index: Index of the format string to start parsing flags from
+ * @i: Index of the format string to start parsing flags from
  * Return: Integer value representing the active flags in the format string
  */
 int parse_flags(const char *format, int *i)

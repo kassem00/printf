@@ -3,7 +3,7 @@
 /**
  * parse_precision - Parses the precision for printing from a format string
  * @format: Formatted string in which to print the arguments
- * @index: Index of the format string to start parsing precision from
+ * @i: Index of the format string to start parsing precision from
  * @list: List of arguments to be printed
  *
  * Return: The parsed precision, or -1 if no precision was found

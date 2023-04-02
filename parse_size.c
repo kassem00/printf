@@ -1,9 +1,10 @@
 #include "main.h"
 
 /**
- * parse_size - Parses the size modifier for printing from a format string
+ * parse_size - Parses the size modifier for 
+ * printing from a format string
  * @format: Formatted string in which to print the arguments
- * @index: Index of the format string to start parsing size modifier from
+ * @i: Index of the format string to start parsing size modifier from
  *
  * Return: The parsed size modifier, or 0 if no size modifier was found
  */
