@@ -30,7 +30,8 @@ while (num_addrs > 0)
 buffer[ind--] = map_to[num_addrs % 16];
 num_addrs /= 16;
 length++;
-}if ((flags & F_ZERO) && !(flags & F_MINUS))
+}
+if ((flags & F_ZERO) && !(flags & F_MINUS))
 padd = '0';
 if (flags & F_PLUS)
 extra_c = '+', length++;
@@ -67,7 +68,8 @@ while (str[i] != '\0')
 {
 if (is_printable(str[i]))
 buffer[i + offset] = str[i];
-else offset += append_hexa_code(str[i], buffer, i + offset);
+else
+offset += append_hexa_code(str[i], buffer, i + offset);
 i++;
 }
 buffer[i + offset] = '\0';

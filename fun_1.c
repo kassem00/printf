@@ -31,6 +31,7 @@ return (write_unsgnd(0, i, buffer, flags, width, precision, size));
 /**
 * print_octal - Prints an unsigned number
 * @buffer: Buffer array to handle print
+* @types: type ininti
 * @flags: Calculates active flags
 * @width: get width
 * @precision: Precision specification
@@ -66,6 +67,7 @@ return (write_unsgnd(0, i, buffer, flags, width, precision, size));
 * @width: get width
 * @precision: Precision specification
 * @size: Size specifier
+* @flags: int input
 * Return: Number of chars printed
 */
 int print_hexadecimal(va_list types, char buffer[],
