@@ -7,22 +7,17 @@
  *
  * Return: The parsed size modifier, or 0 if no size modifier was found
  */
-int parse_size(const char *format, int *index)
+int parse_size(const char *format, int *i)
 {
-	int curr_index = *index + 1;
-	int size = 0;
-
-	if (format[curr_index] == 'l')
-	{
-		size = S_LONG;
-		curr_index++;
-	}
-	else if (format[curr_index] == 'h')
-	{
-		size = S_SHORT;
-		curr_index++;
-	}
-
-	*index = size ? curr_index - 1 : *index;
-	return size;
+int curr_i = *i + 1;
+int size = 0;
+if (format[curr_i] == 'l')
+size = S_LONG;
+else if (format[curr_i] == 'h')
+size = S_SHORT;
+if (size == 0)
+*i = curr_i - 1;
+else
+*i = curr_i;
+return (size);
 }
