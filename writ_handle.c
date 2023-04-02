@@ -1,5 +1,4 @@
 #include "main.h"
-/************************* WRITE HANDLE *************************/
 /**
 * handle_write_char - Prints a string
 * @c: char types.
@@ -30,7 +29,7 @@ buffer[BUFF_SIZE - i - 2] = padd;
 if (flags & F_MINUS)
 return (write(1, &buffer[0], 1) +
 write(1, &buffer[BUFF_SIZE - i - 1], width - 1));
-else 
+else
 return (write(1, &buffer[BUFF_SIZE - i - 1], width - 1) +
 write(1, &buffer[0], 1));
 }
@@ -75,6 +74,7 @@ length, padd, extra_ch));
 * @length: Number length
 * @padd: Pading char
 * @extra_c: Extra char
+* @buffer: Buffer array to handle print
 *
 * Return: Number of printed chars.
 */
