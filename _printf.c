@@ -32,7 +32,7 @@ width = parse_width(format, &i, list);
 precision = parse_precision(format, &i, list);
 size = parse_size(format, &i);
 ++i;
-printed = parse_handle(format, &i, list, buffer, \
+printed = parse_handle(format, &i, list, buffer,
 flags, width, precision, size);
 if (printed == -1)
 return (-1);
