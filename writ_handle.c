@@ -146,7 +146,8 @@ if (precision == 0 && ind == BUFF_SIZE - 2 && buffer[ind] == '0')
 return (0); /* printf(".0d", 0) no char is printed */
 if (precision > 0 && precision < length)
 padd = ' ';
-while (precision > length){
+while (precision > length)
+{
 buffer[--ind] = '0';
 length++;
 }
