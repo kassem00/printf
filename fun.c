@@ -74,6 +74,7 @@ return (write(1, str, length));
 * @flags: Calculates active flags
 * @width: get width.* @precision: Precision specification
 * @size: Size specifier
+* @precision: Precision specifier
 * Return: Number of chars printed
 */
 int print_percent(va_list types, char buffer[],
