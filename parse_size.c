@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
- * parse_size - Parses the size modifier for 
+ * parse_size - Parses the size modifier for
  * printing from a format string
  * @format: Formatted string in which to print the arguments
  * @i: Index of the format string to start parsing size modifier from

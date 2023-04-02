@@ -19,7 +19,7 @@ if (is_digit(format[curr_i]))
 width *= 10;
 width += format[curr_i] - '0';
 curr_i++;
-} 
+}
 else if (format[curr_i] == '*')
 {
 curr_i++;
@@ -32,5 +32,5 @@ break;
 }
 }
 *i = curr_i - 1;
-return width;
+return (width);
 }
