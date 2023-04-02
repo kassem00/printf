@@ -91,7 +91,6 @@ int flags, int width, int precision, int size)
 return (print_hexa(types, "0123456789ABCDEF", buffer,
 flags, 'X', width, precision, size));
 }
-/************** PRINT HEXX NUM IN LOWER OR UPPER **************/
 /**
 * print_hexa - Prints a hexadecimal number in lower or upper
 * @types: Lista of arguments
@@ -103,7 +102,8 @@ flags, 'X', width, precision, size));
 * @precision: Precision specification
 * @size: Size specifier
 * @size: Size specification
-* Return: Number of chars printed*/
+* Return: Number of chars printed
+*/
 int print_hexa(va_list types, char map_to[], char buffer[],
 int flags, char flag_ch, int width, int precision, int size)
 {

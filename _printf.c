@@ -1,9 +1,7 @@
 #include "main.h"
-
 void print_buffer(char buffer[], int *buff_ind);
-
 /**
- * _printf - Printf 
+ * _printf - Printf
  * @format: format.
  * Return: int.
  */
@@ -34,7 +32,7 @@ width = parse_width(format, &i, list);
 precision = parse_precision(format, &i, list);
 size = parse_size(format, &i);
 ++i;
-printed = parse_handle(format, &i, list, buffer,flags, width, precision, size);
+printed = parse_handle(format, &i, list, buffer, flags, width, precision, size);
 if (printed == -1)
 return (-1);
 printed_chars += printed;
@@ -47,7 +45,7 @@ return (printed_chars);
 /**
 * print_buffer - Prints the contents
 * @buffer: char
-* @buff_ind: Index at which to add next char, represents the length.
+* @buff_ind: Index .
 */
 void print_buffer(char buffer[], int *buff_ind)
 {
